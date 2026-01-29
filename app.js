@@ -11,7 +11,12 @@ const root_dir = path.dirname(fileURLToPath(import.meta.url))
 app.use(express.static(path.join(root_dir, 'public'), { index: false }))
 
 // routes
-app.get('/', (req, res) => res.send('index'))
+app.get('/', (req, res, next) => {
+    res.sendFile(path.join(root_dir, 'public', 'index.html'), err => {
+        if (err) { next(err) }
+        else { console.log('file served') }
+    })
+})
 
 app.get('/about', (req, res, next) => {
     res.sendFile(path.join(root_dir, 'public', 'about.html'), err => {
